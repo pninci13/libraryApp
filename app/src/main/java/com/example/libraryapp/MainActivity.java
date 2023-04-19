@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //TODO: Change color of login button
 //TODO: Set font styles
 //TODO: Start implementation of cards in home activity
+//TODO: Make cards for home activity
 
 public class MainActivity extends AppCompatActivity {
     private Button loginBtn;
