@@ -5,4 +5,14 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+
+    <string name="name">Name</string>
+    <string name="amount">Amount</string>
+    <string name="details">Details</string>
+
+    <string name="registrar">Registrar</string>
+    <string name="open_custom_dialog">Add new item</string>
+    <string name="custom_dialog">New Item</string>
+    <string name="info">Name: %1$s. Amount: %2$s. Details %3$s.</string>
 </resources>

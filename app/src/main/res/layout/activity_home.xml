@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,54 @@
     tools:context=".HomeActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/appHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="5dp"
+        android:text="@string/cleitin_library"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/open_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HOME SCREEN"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="356dp"
+        android:text="+"
+        tools:ignore="MissingConstraints"
+        android:onClick="onClick"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:shape="rectangle"
+        android:color="#4fa5d5"
+        android:gravity="center"
+        android:background="@drawable/text_view_circle"
+        android:textSize="30dp"/>
+
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/open_custom_dialog"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:padding="16dp"-->
+<!--        android:textColor="@color/colorWhite"-->
+<!--        android:id="@+id/open_dialog"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:padding="16dp"
+        android:id="@+id/info_tv"
+        android:visibility="gone"
         tools:ignore="MissingConstraints" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
