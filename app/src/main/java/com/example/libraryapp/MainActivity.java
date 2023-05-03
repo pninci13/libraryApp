@@ -8,13 +8,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-//TODO: Change color of login button
 //TODO: Set font styles
 //TODO: Start implementation of cards in home activity
 //TODO: Make cards for home activity
 
 public class MainActivity extends AppCompatActivity {
     private Button loginBtn;
+    private Button signUpBtn;
     private EditText username;
     private EditText password;
 
@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loginBtn = findViewById(R.id.loginButton);
+        signUpBtn = findViewById(R.id.signUpButton);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
                     openHomeActivity();
             }
         });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                username = findViewById(R.id.emailInput);
+                password = findViewById(R.id.passwordInput);
+
+                if(signUp())
+                    openHomeActivity();
+            }
+        });
+
     }
 
     private void openHomeActivity() {
@@ -44,11 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean login() {
         if (username.getText().toString().equals("username") && password.getText().toString().equals("password")) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Login or Signup Success", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_LONG);
             toast.show();
             return true;
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Login or Signup Error", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Login Error", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+    }
+
+    private boolean signUp(){
+        if(username.getText().toString().equals("username") && password.getText().toString().equals("password")){
+            Toast toast = Toast.makeText(getApplicationContext(), "Signup Success", Toast.LENGTH_LONG);
+            toast.show();
+            return true;
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Signup Error", Toast.LENGTH_LONG);
             toast.show();
             return false;
         }
