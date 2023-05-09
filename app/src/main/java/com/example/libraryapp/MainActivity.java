@@ -1,16 +1,13 @@
 package com.example.libraryapp;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-
-
-//TODO: Set font styles
-//TODO: Start implementation of cards in home activity
-//TODO: Make cards for home activity
 
 public class MainActivity extends AppCompatActivity {
     private Button loginBtn;
@@ -43,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 username = findViewById(R.id.emailInput);
                 password = findViewById(R.id.passwordInput);
 
-                if(signUp())
+                if (signUp())
                     openHomeActivity();
             }
         });
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-        //E A MUDANÇA DO TAKAS 777
     }
 
     private boolean login() {
@@ -68,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean signUp(){
-        if(username.getText().toString().equals("username") && password.getText().toString().equals("password")){
+    private boolean signUp() {
+        if (username.getText().toString().equals("username") && password.getText().toString().equals("password")) {
             Toast toast = Toast.makeText(getApplicationContext(), "Signup Success", Toast.LENGTH_LONG);
             toast.show();
             return true;
