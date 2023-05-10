@@ -17,12 +17,12 @@ public interface RetrofitInstance {
     @POST("/api/tasks")
     Call<Void> createItem(@Body);
 
-    @PUT("/api/tasks/{id}")
-    Call<Void> updateTask(@Path("id") long id, @Body);
+    @PUT("data{id}")
+    Call<Void> updateItem(@Path("id") long id, @Body);
 
-    @DELETE("/api/tasks/{id}")
-    Call<Void> deleteTask(@Path("id") long id);
+    @DELETE("data{id}")
+    Call<Void> deleteItem(@Path("id") long id);
 
-    @GET("/api/tasks")
-    Call<List<ClipData.Item>> getAllItem();
+    @GET("data{id}")
+    Call<List<ClipData.Item>> getAllItems();
 }
