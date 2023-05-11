@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/appHeader"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:background="#F1FEFF"
+        android:id="@+id/header"
+        >
+
+        <TextView
+            android:id="@+id/appHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:padding="5dp"
+            android:text="@string/cleitin_library"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/open_dialog"
+            android:layout_width="40sp"
+            android:layout_height="40sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="7sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="70dp"
+            android:src="@drawable/add_item" />
+
+    </RelativeLayout>
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:padding="5dp"
-        android:text="@string/cleitin_library"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/open_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+"
-        tools:ignore="MissingConstraints"
-        android:onClick="onClick"
-        android:clickable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:shape="rectangle"
-        android:color="#4fa5d5"
-        android:gravity="center"
-        android:background="@drawable/text_view_circle"
-        android:textSize="30dp"/>
-
-<!--    <Button-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/open_custom_dialog"-->
-<!--        android:background="@color/colorPrimary"-->
-<!--        android:padding="16dp"-->
-<!--        android:textColor="@color/colorWhite"-->
-<!--        android:id="@+id/open_dialog"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center"
-        android:padding="16dp"
-        android:id="@+id/info_tv"
-        android:visibility="gone"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/list"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/header"
+        />
 
 </RelativeLayout>

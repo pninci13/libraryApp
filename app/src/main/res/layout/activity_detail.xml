@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".DetailActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="100dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailName"
+            android:layout_marginTop="14dp"
+            android:text="Recipe Name"
+            android:textSize="24sp"
+            android:textColor="@color/lavender"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="380dp"
+            android:layout_height="200dp"
+            android:id="@+id/cardImage"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:layout_width="380dp"
+                android:layout_height="200dp"
+                android:id="@+id/detailImage"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:src="@drawable/abtm"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount:"
+                    android:textColor="@color/lavender"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="time"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16sp"
+                    android:id="@+id/detailAmount"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lessee(s) with this item:"
+                    android:textColor="@color/lavender"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maggieDesc"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16sp"
+                    android:id="@+id/detailLessee"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Availability:"
+                    android:textColor="@color/lavender"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maggieDesc"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16sp"
+                    android:id="@+id/detailAvailability"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Details:"
+                    android:textColor="@color/lavender"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maggieDesc"
+                    android:layout_marginStart="10dp"
+                    android:textSize="16sp"
+                    android:id="@+id/detailDescription"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:text="Lend Item"-->
+<!--        android:textColor="@color/colorWhite"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:id="@+id/lend_item_button"/>-->
+
+
+</RelativeLayout>
