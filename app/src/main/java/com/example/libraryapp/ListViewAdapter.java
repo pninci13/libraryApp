@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 class ListViewAdapter extends ArrayAdapter<String> {
@@ -44,7 +46,7 @@ class ListViewAdapter extends ArrayAdapter<String> {
 
             Item item = Item.fromString(list.get(position));
             name.setText(item.getName());
-            Log.d("CREATION", item.getDetails());
+//            Log.d("CREATION", item.getDetails());
             // Listeners for duplicating and removing an item.
             // They use the static removeItem and addItem methods created in MainActivity.
             remove.setOnClickListener(new View.OnClickListener() {

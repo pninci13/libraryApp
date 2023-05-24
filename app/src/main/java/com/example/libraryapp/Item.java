@@ -1,9 +1,10 @@
 package com.example.libraryapp;
 
+import android.util.Log;
+
 public class Item {
-    private String name, details, state;
+    private String name, amount, details, state;
     private String lessee_name, lessee_phone;
-    private String amount;
 
     public Item(String name, String amount, String details, String state, String lessee_name, String lessee_phone) {
         this.name = name;
@@ -64,7 +65,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "[name=" +  name + ", amount=" + amount + ", details=" + details + ", state: " + state + ", lessee_name=" + lessee_name + ", lessee_phone=" + lessee_phone + "]";
+        return "[name=" +  name + ", amount=" + amount + ", details=" + details + ", state=" + state + ", lessee_name=" + lessee_name + ", lessee_phone=" + lessee_phone + "]";
     }
 
     public static Item fromString(String str) {

@@ -27,7 +27,7 @@
     <string name="person_info">Name: %1$s. Phone: %2$s. Details %3$s.</string>
 
     <string name="available">available</string>
-    <string name="unavailable">available</string>
+    <string name="unavailable">unavailable</string>
 
     <string name="new_lessee">New Lessee</string>
     <string name="is_available">accept to withdraw item</string>
@@ -101,6 +101,8 @@ Add the maggi masala on to it
 \nAdd the maggi masala on to it
 \nWait for 2 mins
 \nMaggi is ready!</string>
+    <string name="edit">Edit</string>
+    <string name="edit_item">Edit item</string>
 
 
 </resources>
