@@ -5,23 +5,71 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.libraryapp.databinding.ActivityHomeBinding;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class HomeActivity extends AppCompatActivity {
     ImageView image;
-    TextView openDialog;
+//    TextView openDialog;
+    ImageView openDialog;
+    ImageView historyDialog;
     TextView infoTv;
+    static Toast t;
+//    String path = System.getProperty("user.dir");
+
+    static ListView listView;
+    EditText input;
+    ImageView enter;
+    static ListViewAdapter adapter;
+    static ArrayList<String> items, allItems;
+    static ArrayList<Item> objectList;
+
+    static Context context;
+
+    ActivityHomeBinding binding;
+
+    public static ArrayList<String> getItems() {
+        return items;
+    }
+
+    public static void setItems(ArrayList<String> items) {
+        HomeActivity.items = items;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +77,38 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         openDialog = findViewById(R.id.open_dialog);
-        infoTv = findViewById(R.id.info_tv);
+        historyDialog = findViewById(R.id.history_dialog);
+
+        listView = findViewById(R.id.list);
+        context = getApplicationContext();
+
+        items = new ArrayList<>();
+        allItems = new ArrayList<>();
+        objectList = new ArrayList<>();
+
+        Item item;
+
+        item = new Item("apple", "30", "lalala", "available", "", "", "created");
+        item.addHistory("created");
+        addItem(item.toString());
+        objectList.add(item);
+        Log.d("CREATION", "id 1 = " + item.id);
+
+
+        item = new Item("banana", "34", "lasasdas", "unavailable", "asas", "oooo", "created");
+        item.addHistory("created");
+        addItem(item.toString());
+        objectList.add(item);
+
+        Log.d("CREATION", "id 2 = " + item.id);
+
+
+        listView.setLongClickable(true);
+        adapter = new ListViewAdapter(this, items);
+        listView.setAdapter(adapter);
+
+//        DetailActivity.getList(items);
+
         openDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,11 +116,157 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        historyDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openHistoryActivity();
+            }
+        });
+
+        // Display the item name when the item's row is clicked
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+                Item item = Item.fromString(items.get(i));
+                
+                intent.putExtra("name", item.getName());
+                intent.putExtra("amount", item.getAmount());
+                intent.putExtra("details", item.getDetails());
+                intent.putExtra("state", item.getState());
+                intent.putExtra("lessee_name", item.getLessee_name());
+                intent.putExtra("lessee_phone", item.getLessee_phone());
+                intent.putExtra("id", Integer.toString(i));
+
+                startActivity(intent);
+            }
+        });
+
+        try {
+            loadContent();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void openHistoryActivity() {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
+    // function to read grocery list from file and load it into ListView
+    public void loadContent() throws JSONException, IOException {
+//        InputStream inputStream = getAssets().open("data.json");
+//        int size = inputStream.available();
+//        byte[] buffer = new byte[size];
+//        inputStream.read(buffer);
+//        inputStream.close();
+//
+//        String json;
+//        int max;
+//
+//        json = new String(buffer, StandardCharsets.UTF_8);
+//        JSONArray jsonArray = new JSONArray(json);
+//        max = jsonArray.length();
+//        items.clear();
+//
+//        String name = "", amount = "", details = "", state = "", lessee_name = "", lessee_phone = "";
+//
+//
+//        for (int i = 0; i < max; i++) {
+//            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//            name = jsonObject.getString("name");
+//            amount = jsonObject.getString("amount");
+//            details = jsonObject.getString("details");
+//            state = jsonObject.getString("state");
+//            lessee_name = jsonObject.getString("lessee_name");
+//            lessee_phone = jsonObject.getString("lessee_phone");
+//
+//            Item item = new Item(name, amount, details, state, lessee_name, lessee_phone);
+//
+//            try {
+//                addItem(item.toString());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Log.d("CREATION", "sera: " + items.get(i));
+//        }
+
+//        File path = getApplicationContext().getFilesDir();
+//        File readFrom = new File(path, "list.txt");
+//        byte[] content = new byte[(int) readFrom.length()];
+//
+//        FileInputStream stream = null;
+//        try {
+//            stream = new FileInputStream(readFrom);
+//            stream.read(content);
+//
+//            String s = new String(content);
+//            // [Apple, Banana, Kiwi, Strawberry]
+//            s = s.substring(1, s.length() - 1);
+//            String split[] = s.split(", ");
+//
+//            // There may be no items in the grocery list.
+//            if (split.length == 1 && split[0].isEmpty())
+//                items = new ArrayList<>();
+//            else items = new ArrayList<>(Arrays.asList(split));
+//
+//            adapter = new ListViewAdapter(this, items);
+//            listView.setAdapter(adapter);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    // Override onDestroy() to save the contents of the grocery list right before the app is terminated
+    @Override
+    protected void onDestroy() {
+        File path = getApplicationContext().getFilesDir();
+        try {
+            FileOutputStream writer = new FileOutputStream(new File(path, "list.txt"));
+            writer.write(items.toString().getBytes());
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
+
+    // function to remove an item given its index in the grocery list.
+    public static void removeItem(int i) {
+        String str = items.get(i);
+
+        str = str.substring(1, str.length() - 1); // remove os colchetes da string
+        String[] parts = str.split("id");
+
+        String id = parts[1].substring(parts[1].indexOf("=") + 1);
+
+        for (Item item : objectList) {
+            if(item.id.equals(id))
+                item.addHistory("deleted");
+        }
+
+        items.remove(i);
+        listView.setAdapter(adapter);
+    }
+
+    // function to add an item given its name.
+    public static void addItem(String item) {
+        items.add(item);
+        allItems.add(item);
+//        addItemJSON();
+        listView.setAdapter(adapter);
+    }
+
+    static void makeToast(String s) {
+        if (t != null) t.cancel();
+        t = Toast.makeText(context, s, Toast.LENGTH_SHORT);
+        t.show();
     }
 
     //Function to display the custom dialog.
     void showCustomDialog() {
-
         final Dialog dialog = new Dialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -51,18 +276,11 @@ public class HomeActivity extends AppCompatActivity {
         final EditText itemName = dialog.findViewById(R.id.item_name);
         final EditText itemAmount = dialog.findViewById(R.id.item_amount);
         final EditText itemDetails = dialog.findViewById(R.id.item_details);
+        final EditText lesseeName = dialog.findViewById(R.id.lessee_name);
+        final EditText lesseePhone = dialog.findViewById(R.id.lessee_phone);
+
         Button submitButton = dialog.findViewById(R.id.submit_button);
-//      Button addImage = findViewById(R.id.add_Image);
-//
-//        addImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View vi) {
-//                Toast toast = Toast.makeText(getApplicationContext(), "ola imagem", Toast.LENGTH_LONG);
-//                toast.show();
-//                Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-//                startActivityForResult(Intent.createChooser(intent,"Ecolha sua imagem"),1000);
-//            }
-//        });
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +288,40 @@ public class HomeActivity extends AppCompatActivity {
                 String name = itemName.getText().toString();
                 String amount = itemAmount.getText().toString();
                 String details = itemDetails.getText().toString();
-                populateInfoTv(name,amount,details);
+                String lessee_name = lesseeName.getText().toString();
+                String lessee_phone = lesseePhone.getText().toString();
+
+                Pattern p = Pattern.compile("^\\d{10}$");
+                Matcher m = p.matcher(lessee_phone);
+
+                if(!name.isEmpty() && !amount.isEmpty()){
+                    if(lessee_name.isEmpty() && lessee_phone.isEmpty()){
+                        Item item = new Item(name, amount, details, "available", "", "", "created");
+                        item.addHistory("created");
+                        objectList.add(item);
+                        addItem(item.toString());
+                        Log.d("CREATION", "id 3 = " + item.id);
+
+
+                        makeToast("Added with available");
+                    }else if(!lessee_name.isEmpty() && !lessee_phone.isEmpty()){
+                        if(m.matches()){
+                            Item item = new Item(name, amount, details, "unavailable", lessee_name, lessee_phone, "created");
+                            addItem(item.toString());
+                            item.addHistory("created");
+                            objectList.add(item);
+
+                            makeToast("Added with unavailable");
+                        }else{
+                            makeToast("Phone is wrong");
+                        }
+                    }else{
+                        makeToast("Missing Lessee Values");
+                    }
+                }else{
+                    makeToast("Missing Item Values");
+                }
+
                 dialog.dismiss();
             }
         });
@@ -78,62 +329,9 @@ public class HomeActivity extends AppCompatActivity {
         dialog.show();
     }
 
-//   void addImageItem() {
-//        Button addImage = findViewById(R.id.add_Image);
-//        addImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-//                intent.setType("image/*");
-//                startActivityForResult(Intent.createChooser(intent,"Ecolha sua imagem"),1000);
-//                Toast toast = Toast.makeText(getApplicationContext(), "ola imagem", Toast.LENGTH_LONG);
-//                toast.show();
-//                if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-//                    String[] permission = (Manifest.permission.READ_EXTERNAL_STORAGE);
-//                    requestPermissions(permission, 1001);
-//                }else{
-//                    chooseImage();
-//                }
-//            }
-//        });
-//    }
-
-//    private void chooseImage(){
-//        Intent intent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-//        intent.setType("image/*");
-//        startActivityForResult(Intent.createChooser(intent,"Ecolha sua imagem"),1000);
-//    }
-//
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == 1000) {
-//                image.setImageURI(data.getData());
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode){
-//            case 1001: {
-//                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                    chooseImage();
-//                }else{
-//                    Toast
-//                }
-//            }
-//        }
-//    }
-
     void populateInfoTv(String name, String amount, String details) {
         infoTv.setVisibility(View.VISIBLE);
-//        String acceptedText = "have";
-//        if(!hasAcceptedTerms) {
-//            acceptedText = "have not";
-//        }
 
-//        infoTv.setText(String.format("New item successfully added"));
         if(!name.isEmpty() && !amount.isEmpty()){
             infoTv.setText(String.format(getString(R.string.info), name, amount, details));
             Toast toast = Toast.makeText(getApplicationContext(), "New Item added succesfully", Toast.LENGTH_LONG);

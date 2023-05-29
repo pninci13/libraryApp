@@ -1,41 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/custom_dialog"
+        android:text="@string/new_person"
         android:textSize="24sp"
         android:textColor="@color/colorBlack"
         android:layout_marginBottom="16dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name"
-        android:inputType="text"
-        android:imeOptions="actionNext"
-        android:id="@+id/item_name"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/amount"
-        android:inputType="number"
-        android:imeOptions="actionNext"
-        android:id="@+id/item_amount"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/details"
-        android:inputType="text"
-        android:imeOptions="actionNext"
-        android:id="@+id/item_details"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -53,6 +28,12 @@
         android:imeOptions="actionNext"
         android:id="@+id/lessee_phone"/>
 
+<!--    <CheckBox-->
+<!--        android:id="@+id/checkBox"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/is_available" />-->
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,6 +41,6 @@
         android:text="@string/submit"
         android:textColor="@color/colorWhite"
         android:background="@color/colorPrimary"
-        android:id="@+id/submit_button"/>
+        android:id="@+id/submit_lessee_button"/>
 
 </LinearLayout>
