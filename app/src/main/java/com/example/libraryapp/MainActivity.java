@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private void openHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-        //E A MUDANÇA DO TAKAS 777
     }
 
     private boolean login() {

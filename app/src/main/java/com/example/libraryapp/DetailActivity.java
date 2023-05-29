@@ -167,6 +167,14 @@ public class DetailActivity extends AppCompatActivity {
                 lesseeAmount = Integer.parseInt(item_amount);
                 oldAmount = Integer.parseInt(oldItem.getAmount());
 
+                String str = items.get(index);
+//
+                str = str.substring(1, str.length() - 1); // remove os colchetes da string
+                String[] parts = str.split("id");
+//
+                String itemId = parts[1].substring(parts[1].indexOf("=") + 1);
+                int itemIntId = Integer.parseInt(itemId);
+
 //                items.remove(index);
 
                 if(lesseeAmount < oldAmount){
@@ -174,17 +182,34 @@ public class DetailActivity extends AppCompatActivity {
                     newItem.setAmount(Integer.toString(lesseeAmount));
                     newItem.setLessee_name(item_lessee_name);
                     newItem.setLessee_phone(item_lessee_phone);
+
+                    newItem.addHistory("edited");
+                    newItem.id = Integer.toString(itemIntId + 1);
+                    HomeActivity.objectList.add(newItem);
                     HomeActivity.addItem(newItem.toString());
 
                     oldItem.setAmount(Integer.toString(oldAmount - lesseeAmount));
+
+                    for (Item item : HomeActivity.objectList) {
+                        if(item.id.equals(oldItem.id))
+                            item.addHistory("edited");
+                    }
                     HomeActivity.addItem(oldItem.toString());
 
-                }
-                else if(lesseeAmount == oldAmount) {
+                    oldItem.addHistory("edited");
+                    HomeActivity.objectList.add(oldItem);
+
+                    //existirá ids iguais - resolver dps
+
+                } else if(lesseeAmount == oldAmount) {
                     HomeActivity.removeItem(index);
                     newItem.setAmount(Integer.toString(lesseeAmount));
                     newItem.setLessee_name(item_lessee_name);
                     newItem.setLessee_phone(item_lessee_phone);
+
+                    newItem.addHistory("edited");
+                    newItem.id = Integer.toString(itemIntId + 1);
+                    HomeActivity.objectList.add(newItem);
                     HomeActivity.addItem(newItem.toString());
 //                    items.add(index, newItem.toString());
                 } else{

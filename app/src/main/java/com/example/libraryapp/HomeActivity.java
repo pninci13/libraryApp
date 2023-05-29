@@ -47,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView image;
 //    TextView openDialog;
     ImageView openDialog;
+    ImageView historyDialog;
     TextView infoTv;
     static Toast t;
 //    String path = System.getProperty("user.dir");
@@ -55,7 +56,9 @@ public class HomeActivity extends AppCompatActivity {
     EditText input;
     ImageView enter;
     static ListViewAdapter adapter;
-    static ArrayList<String> items;
+    static ArrayList<String> items, allItems;
+    static ArrayList<Item> objectList;
+
     static Context context;
 
     ActivityHomeBinding binding;
@@ -74,27 +77,30 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         openDialog = findViewById(R.id.open_dialog);
-        openDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCustomDialog();
-            }
-        });
+        historyDialog = findViewById(R.id.history_dialog);
 
         listView = findViewById(R.id.list);
-//        enter = findViewById(R.id.add);
         context = getApplicationContext();
 
         items = new ArrayList<>();
+        allItems = new ArrayList<>();
+        objectList = new ArrayList<>();
+
         Item item;
 
-        item = new Item("apple", "30", "lalala", "available", "", ""  );
+        item = new Item("apple", "30", "lalala", "available", "", "", "created");
+        item.addHistory("created");
         addItem(item.toString());
+        objectList.add(item);
+        Log.d("CREATION", "id 1 = " + item.id);
 
-        item = new Item("bannana", "34", "lasasdas", "unavailable", "asas", "oooo"  );
+
+        item = new Item("banana", "34", "lasasdas", "unavailable", "asas", "oooo", "created");
+        item.addHistory("created");
         addItem(item.toString());
+        objectList.add(item);
 
-
+        Log.d("CREATION", "id 2 = " + item.id);
 
 
         listView.setLongClickable(true);
@@ -102,6 +108,20 @@ public class HomeActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 //        DetailActivity.getList(items);
+
+        openDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showCustomDialog();
+            }
+        });
+
+        historyDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openHistoryActivity();
+            }
+        });
 
         // Display the item name when the item's row is clicked
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,14 +141,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Remove an item when its row is long pressed
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                removeItem(i);
-                return false;
-            }
-        });
 
         try {
             loadContent();
@@ -138,6 +150,10 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void openHistoryActivity() {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
     // function to read grocery list from file and load it into ListView
     public void loadContent() throws JSONException, IOException {
 //        InputStream inputStream = getAssets().open("data.json");
@@ -219,6 +235,18 @@ public class HomeActivity extends AppCompatActivity {
 
     // function to remove an item given its index in the grocery list.
     public static void removeItem(int i) {
+        String str = items.get(i);
+
+        str = str.substring(1, str.length() - 1); // remove os colchetes da string
+        String[] parts = str.split("id");
+
+        String id = parts[1].substring(parts[1].indexOf("=") + 1);
+
+        for (Item item : objectList) {
+            if(item.id.equals(id))
+                item.addHistory("deleted");
+        }
+
         items.remove(i);
         listView.setAdapter(adapter);
     }
@@ -226,68 +254,10 @@ public class HomeActivity extends AppCompatActivity {
     // function to add an item given its name.
     public static void addItem(String item) {
         items.add(item);
+        allItems.add(item);
 //        addItemJSON();
         listView.setAdapter(adapter);
     }
-
-//    public static void addItemJSON() throws JSONException {
-//        JSONObject listObject = new JSONObject();
-//        Item itemObj;
-//
-//        createJSONFolder();
-//        CompositionJso obj = new CompositionJso();
-//        JSONObject  jsonObject = obj.makeJSONObject(compoTitle, compoDesc, imgPaths, imageViewPaths);
-//        MyCompositionsListActivity.buildList();
-//
-//        try {
-//            Writer output = null;
-//            File file = new File("storage/sdcard/MyIdea/MyCompositions/" + compoTitle + ".json");
-//            output = new BufferedWriter(new FileWriter(file));
-//            output.write(jsonObject.toString());
-//            output.close();
-//            Toast.makeText(getApplicationContext(), "Composition saved", Toast.LENGTH_LONG).show();
-//
-//        } catch (Exception e) {
-//            Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
-//        finish();
-//
-////        for (String item : items) {
-////            itemObj = Item.fromString(item);
-////            listObject.put("name", itemObj.getName());
-////            listObject.put("amount", itemObj.getAmount());
-////            listObject.put("details", itemObj.getDetails());
-////            listObject.put("state", itemObj.getState());
-////            listObject.put("lessee_name", itemObj.getLessee_name());
-////            listObject.put("lessee_phone", itemObj.getLessee_phone());
-////        }
-////
-////        try {
-////
-////            OutputStream os = openFileOutput("samplefile.txt", MODE_PRIVATE);
-////            BufferedWriter lout = new BufferedWriter(new OutputStreamWriter(os));
-////
-////            File file = new File("data.json");
-////            FileWriter fileWriter = new FileWriter(file);
-////
-////            if(file.createNewFile())
-////                fileWriter.write(listObject.toString());
-////
-////            fileWriter.close();
-////        } catch (IOException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-//
-//
-//        Log.d("CREATION", "JSON file created: "+ listObject);
-//
-//
-//    }
-//
-//
-
-    // function to make a Toast given a string
 
     static void makeToast(String s) {
         if (t != null) t.cancel();
@@ -297,7 +267,6 @@ public class HomeActivity extends AppCompatActivity {
 
     //Function to display the custom dialog.
     void showCustomDialog() {
-
         final Dialog dialog = new Dialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -327,15 +296,21 @@ public class HomeActivity extends AppCompatActivity {
 
                 if(!name.isEmpty() && !amount.isEmpty()){
                     if(lessee_name.isEmpty() && lessee_phone.isEmpty()){
-                        Item item = new Item(name, amount, details, "available", "", ""  );
+                        Item item = new Item(name, amount, details, "available", "", "", "created");
+                        item.addHistory("created");
+                        objectList.add(item);
                         addItem(item.toString());
+                        Log.d("CREATION", "id 3 = " + item.id);
+
 
                         makeToast("Added with available");
                     }else if(!lessee_name.isEmpty() && !lessee_phone.isEmpty()){
                         if(m.matches()){
-                            Item item = new Item(name, amount, details, "unavailable", lessee_name, lessee_phone);
-
+                            Item item = new Item(name, amount, details, "unavailable", lessee_name, lessee_phone, "created");
                             addItem(item.toString());
+                            item.addHistory("created");
+                            objectList.add(item);
+
                             makeToast("Added with unavailable");
                         }else{
                             makeToast("Phone is wrong");
@@ -346,15 +321,6 @@ public class HomeActivity extends AppCompatActivity {
                 }else{
                     makeToast("Missing Item Values");
                 }
-
-
-//                Item item = new Item(name, amount, details, "", "", ""  );
-
-//                populateInfoTv(name,amount,details);
-
-//                addItem(item.toString());
-//                input.setText("");
-//                makeToast("Added " + name);
 
                 dialog.dismiss();
             }

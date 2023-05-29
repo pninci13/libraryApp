@@ -13,17 +13,6 @@
         android:id="@+id/header"
         >
 
-        <ImageView
-            android:id="@+id/history_dialog"
-            android:layout_width="36sp"
-            android:layout_height="36sp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="70sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/history" />
-
         <TextView
             android:id="@+id/appHeader"
             android:layout_width="wrap_content"
@@ -31,22 +20,11 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
             android:padding="5dp"
-            android:text="@string/cleitin_library"
+            android:text="@string/history"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/open_dialog"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="7sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="70dp"
-            android:src="@drawable/add_item" />
 
     </RelativeLayout>
 
